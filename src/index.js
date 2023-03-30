@@ -2,6 +2,7 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
+import { fetchCountries } from './js/fetchCountries';
 
 const searchForm = document.getElementById('search-form');
 const picturesContainer = document.querySelector('.gallery');
@@ -75,7 +76,9 @@ function onSearchForm(e) {
     });
 };
 
-
+function onloadMore() {
+  page += 1;
+}
 
 
 
