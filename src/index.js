@@ -5,23 +5,12 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 const searchForm = document.getElementById('search-form');
 const picturesContainer = document.querySelector('.gallery');
-const searchBtn = document.querySelector('#searchBtn');
 
-searchBtn.addEventListener('click', e => {
-    e.preventDefault();
-    const  searchValue = document.querySelector('#searchInput').value;
-    fetchCountries(searchValue).then(response => {
-        if (!response.ok) {
-            Notiflix.Notify.failure(
-                'Sorry, there are no images matching your search query. Please try again.'
-            )
-        }
-        return response.json();
-    }).catch(error => console.log(error))
-        .finally(() => {
-      searchForm.reset();
-    }); 
-});
+searchForm.addEventListener('submit', onSearchForm);
+
+let query = '';
+let page = 1;
+const perPage = 40;
 
 function renderGallery(imagesItems) {
     const createGalleryMarkup  = imagesItems
@@ -52,10 +41,39 @@ function renderGallery(imagesItems) {
         })
         .join('');
 
-   picturesContainer.insertAdjacentHTML('beforeend', createGalleryMarkup );
+   picturesContainer.insertAdjacentHTML('beforeend', createGalleryMarkup);
     
 };
 
+function onSearchForm(e) {
+    e.preventDefault();
+    page = 1;
+    query = e.currentTarget.elements.searchQuery.value.trim();
+    picturesContainer.innerHTML = '';
+    
+    if (query === '') {
+    Notiflix.Notify.failure(
+      'The search string cannot be empty. Please specify your search query.',
+    );
+    return;
+  }
+
+  fetchCountries(query, page, perPage)
+    .then(data => {
+      if (data.totalHits === 0) {
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.',
+        );
+      } else {
+        renderGallery(data.hits);
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+      }
+    })
+    .catch(error => console.log(error))
+    .finally(() => {
+      searchForm.reset();
+    });
+};
 
 
 
