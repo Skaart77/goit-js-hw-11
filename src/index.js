@@ -23,16 +23,19 @@ searchBtn.addEventListener('click', e => {
     }); 
 });
 
-const renderGallery = (galleryItems) => {
-    picturesContainer.innerHTML = '';
-    const galleryMarkup = galleryItems.map(({ id,
-            largeImageURL,
-            webformatURL,
-            tags,
-            likes,
-            views,
-            comments,
-            downloads }) => {
+function renderGallery(imagesItems) {
+    const createGalleryMarkup  = imagesItems
+        .map(image => {
+            const {
+                id,
+                largeImageURL,
+                webformatURL,
+                tags,
+                likes,
+                views,
+                comments,
+                downloads,
+            } = image;
             return `
         <a class="gallery__link" href="${largeImageURL}">
           <div class="gallery-item" id="${id}">
@@ -46,9 +49,10 @@ const renderGallery = (galleryItems) => {
           </div>
         </a>
       `;
-    }).join('');
-    
-    gallery.insertAdjacentHTML('beforeend', galleryMarkup);
+        })
+        .join('');
+
+   picturesContainer.insertAdjacentHTML('beforeend', createGalleryMarkup );
     
 };
 
