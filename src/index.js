@@ -6,6 +6,7 @@ import { fetchCountries } from './js/fetchCountries';
 
 const searchForm = document.getElementById('search-form');
 const picturesContainer = document.querySelector('.gallery');
+const btnOnloadMore = document.querySelector('.load-more');
 
 searchForm.addEventListener('submit', onSearchForm);
 
@@ -44,6 +45,14 @@ function renderGallery(imagesItems) {
 
    picturesContainer.insertAdjacentHTML('beforeend', createGalleryMarkup);
     
+    const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 };
 
 function onSearchForm(e) {
@@ -66,7 +75,8 @@ function onSearchForm(e) {
           'Sorry, there are no images matching your search query. Please try again.',
         );
       } else {
-        renderGallery(data.hits);
+          renderGallery(data.hits);
+          simpleLightBox = new SimpleLightbox('.gallery a').refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
       }
     })
@@ -77,12 +87,25 @@ function onSearchForm(e) {
 };
 
 function onloadMore() {
-  page += 1;
+ page += 1;
+  simpleLightBox.destroy();
+ 
+  fetchCountries(query, page, perPage)
+    .then(data => {
+      renderGallery(data.hits);
+      simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+
+      const totalPages = Math.ceil(data.totalHits / perPage);
+
+      if (page > totalPages) {
+        Notiflix.Notify.failure(
+          "We're sorry, but you've reached the end of search results.",
+        );
+      }
+    })
+    .catch(error => console.log(error));
 }
 
-
-
-
-
+btnOnloadMore.addEventListener('click', onloadMore);
 
 
