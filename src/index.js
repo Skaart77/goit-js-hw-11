@@ -6,7 +6,7 @@ import { fetchCountries } from './js/fetchCountries';
 
 const searchForm = document.getElementById('search-form');
 const picturesContainer = document.querySelector('.gallery');
-const btnOnloadMore = document.querySelector('.load-more');
+// const btnOnloadMore = document.querySelector('.load-more');
 
 searchForm.addEventListener('submit', onSearchForm);
 
@@ -106,6 +106,24 @@ function onloadMore() {
     .catch(error => console.log(error));
 }
 
-btnOnloadMore.addEventListener('click', onloadMore);
+function checkIfEndOfPage() {
+  return (
+    window.innerHeight + window.pageYOffset >=
+    document.documentElement.scrollHeight
+  );
+}
+
+
+function showLoadMorePage() {
+  if (checkIfEndOfPage()) {
+    onloadMore();
+  }
+}
+
+window.addEventListener('scroll', showLoadMorePage);
+
+window.addEventListener('scroll', function () {
+  arrowTop.hidden = scrollY < document.documentElement.clientHeight;
+});
 
 
