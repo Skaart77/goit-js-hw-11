@@ -89,7 +89,6 @@ function onSearchForm(e) {
 function onloadMore() {
   page += 1;
   simpleLightBox.destroy();
-  // simpleLightBox.refresh();
 
   fetchCountries(query, page, perPage)
     .then(data => {
