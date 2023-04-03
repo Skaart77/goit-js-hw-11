@@ -13,6 +13,7 @@ searchForm.addEventListener('submit', onSearchForm);
 let query = '';
 let page = 1;
 const perPage = 40;
+let simpleLightBox;
 
 function renderGallery(imagesItems) {
     const createGalleryMarkup  = imagesItems
@@ -55,8 +56,6 @@ function renderGallery(imagesItems) {
   });
 };
 
-var simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-
 function onSearchForm(e) {
     e.preventDefault();
     page = 1;
@@ -78,6 +77,7 @@ function onSearchForm(e) {
         );
       } else {
           renderGallery(data.hits);
+          simpleLightBox = new SimpleLightbox('.gallery a').refresh();
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
       }
     })
