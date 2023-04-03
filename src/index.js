@@ -93,7 +93,7 @@ function onloadMore() {
   fetchCountries(query, page, perPage)
     .then(data => {
       renderGallery(data.hits);
-      simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+      simpleLightBox = new SimpleLightbox('.gallery a').destroy();
 
       const totalPages = Math.ceil(data.totalHits / perPage);
 
