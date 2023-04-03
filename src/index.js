@@ -87,9 +87,10 @@ function onSearchForm(e) {
 };
 
 function onloadMore() {
- page += 1;
- simpleLightBox.destroy();
- 
+  page += 1;
+  simpleLightBox.destroy();
+  // simpleLightBox.refresh();
+
   fetchCountries(query, page, perPage)
     .then(data => {
       renderGallery(data.hits);
@@ -105,7 +106,6 @@ function onloadMore() {
     })
     .catch(error => console.log(error));
 }
-
 function checkIfEndOfPage() {
   return (
     window.innerHeight + window.pageYOffset >=
