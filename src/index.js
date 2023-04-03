@@ -88,12 +88,12 @@ function onSearchForm(e) {
 
 function onloadMore() {
  page += 1;
- simpleLightBox.destroy();
+ simpleLightBox.refresh();
  
   fetchCountries(query, page, perPage)
     .then(data => {
       renderGallery(data.hits);
-      simpleLightBox = new SimpleLightbox('.gallery a').destroy();
+      simpleLightBox = new SimpleLightbox('.gallery a').refresh();
 
       const totalPages = Math.ceil(data.totalHits / perPage);
 
