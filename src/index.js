@@ -122,8 +122,4 @@ function showLoadMorePage() {
 
 window.addEventListener('scroll', showLoadMorePage);
 
-window.addEventListener('scroll', function () {
-  arrowTop.hidden = scrollY < document.documentElement.clientHeight;
-});
-
 
